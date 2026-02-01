@@ -1,0 +1,59 @@
+name: Sync whatsmeow
+
+on:
+  schedule:
+    # GitHub cron tidak punya "every 2 days" native.
+    # Ini jalan setiap hari jam 00:00 UTC, lalu job-nya akan skip kalau bukan hari genap.
+    - cron: "0 0 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo kamu
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Only run every 2 days (even day-of-month)
+        shell: bash
+        run: |
+          day=$(date -u +%d)
+          if (( 10#$day % 2 != 0 )); then
+            echo "Hari ini (UTC) tanggal $day, skip (bukan jadwal 2-harian)."
+            exit 0
+          fi
+          echo "Tanggal $day (UTC) => jalan."
+
+      - name: Add upstream remote (whatsmeow)
+        shell: bash
+        run: |
+          git remote add upstream https://github.com/tulir/whatsmeow.git || true
+          git remote -v
+
+      - name: Fetch upstream
+        shell: bash
+        run: |
+          git fetch upstream --prune
+
+      - name: Pull upstream into current branch
+        shell: bash
+        run: |
+          BRANCH="${GITHUB_REF_NAME}"
+          echo "Current branch: $BRANCH"
+          git pull --ff-only upstream "$BRANCH"
+
+      - name: Commit & push if changed
+        shell: bash
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "Tidak ada perubahan."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: sync from tulir/whatsmeow"
+          git push
