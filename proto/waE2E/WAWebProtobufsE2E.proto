@@ -48,11 +48,9 @@ enum HistorySyncType {
 }
 
 enum MediaKeyDomain {
-	UNSET = 0;
-	E2EE_CHAT = 1;
-	STATUS = 2;
-	CAPI = 3;
-	BOT = 4;
+    MEDIA_KEY_DOMAIN_UNKNOWN = 0;
+    MEDIA_KEY_DOMAIN_E2EE = 1;
+    MEDIA_KEY_DOMAIN_NON_E2EE = 2;
 }
 
 enum WebLinkRenderConfig {
@@ -61,9 +59,9 @@ enum WebLinkRenderConfig {
 }
 
 enum KeepType {
-	UNKNOWN_KEEP_TYPE = 0;
-	KEEP_FOR_ALL = 1;
-	UNDO_KEEP_FOR_ALL = 2;
+    UNKNOWN = 0;
+    KEEP_FOR_ALL = 1;
+    UNDO_KEEP_FOR_ALL = 2;
 }
 
 message StickerPackMessage {
@@ -289,6 +287,7 @@ message SecretEncryptedMessage {
 	optional bytes encPayload = 2;
 	optional bytes encIV = 3;
 	optional SecretEncType secretEncType = 4;
+    optional string remoteKeyId = 5;
 }
 
 message GroupInviteMessage {
@@ -821,6 +820,7 @@ message ProtocolMessage {
 	optional bytes aiPsiMetadata = 25;
 	optional AIQueryFanout aiQueryFanout = 26;
 	optional MemberLabel memberLabel = 27;
+    optional WAAICommon.AIMediaCollectionMessage aiMediaCollectionMessage = 28;
 }
 
 message CloudAPIThreadControlNotification {
@@ -1289,6 +1289,9 @@ message ContextInfo {
 	optional uint32 nonJIDMentions = 70;
 	optional QuotedType quotedType = 71;
 	optional WAAICommon.BotMessageSharingInfo botMessageSharingInfo = 72;
+    optional bool isSpoiler = 73;
+    optional MediaDomainInfo mediaDomainInfo = 74;
+    optional PartiallySelectedContent partiallySelectedContent = 75;
 }
 
 message MessageAssociation {
@@ -1573,6 +1576,8 @@ message Message {
 	optional PollResultSnapshotMessage pollResultSnapshotMessageV3 = 115;
 	optional FutureProofMessage newsletterAdminProfileMessage = 116;
 	optional FutureProofMessage newsletterAdminProfileMessageV2 = 117;
+    optional FutureProofMessage spoilerMessage = 118;
+    optional FutureProofMessage pollCreationMessageV6 = 119;
 }
 
 message AlbumMessage {
@@ -1585,6 +1590,7 @@ message MessageHistoryMetadata {
 	repeated string historyReceivers = 1;
 	optional int64 oldestMessageTimestamp = 2;
 	optional int64 messageCount = 3;
+        repeated string nonHistoryReceivers = 4;
 }
 
 message MessageHistoryNotice {
@@ -1702,6 +1708,8 @@ message PollCreationMessage {
 	optional PollContentType pollContentType = 6;
 	optional PollType pollType = 7;
 	optional Option correctAnswer = 8;
+    optional int64 endTime = 9;
+    optional bool hideParticipantName = 10;
 }
 
 message StickerSyncRMRMessage {
@@ -1850,6 +1858,7 @@ message StickerMessage {
 	optional bool isLottie = 21;
 	optional string accessibilityLabel = 22;
 	optional MediaKeyDomain mediaKeyDomain = 23;
+    optional int32 premium = 24;
 }
 
 message LiveLocationMessage {
@@ -2219,4 +2228,9 @@ message AIQueryFanout {
 	optional WACommon.MessageKey messageKey = 1;
 	optional Message message = 2;
 	optional int64 timestamp = 3;
+}
+
+message MediaDomainInfo {
+    optional MediaKeyDomain mediaKeyDomain = 1;
+    optional bytes e2EeMediaKey = 2;
 }

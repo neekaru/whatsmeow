@@ -4,46 +4,51 @@ option go_package = "go.mau.fi/whatsmeow/proto/waAICommon";
 
 import "waCommon/WACommon.proto";
 
+import "waStatusAttributions/WAStatusAttributions.proto";
 enum BotMetricsEntryPoint {
-	UNDEFINED_ENTRY_POINT = 0;
-	FAVICON = 1;
-	CHATLIST = 2;
-	AISEARCH_NULL_STATE_PAPER_PLANE = 3;
-	AISEARCH_NULL_STATE_SUGGESTION = 4;
-	AISEARCH_TYPE_AHEAD_SUGGESTION = 5;
-	AISEARCH_TYPE_AHEAD_PAPER_PLANE = 6;
-	AISEARCH_TYPE_AHEAD_RESULT_CHATLIST = 7;
-	AISEARCH_TYPE_AHEAD_RESULT_MESSAGES = 8;
-	AIVOICE_SEARCH_BAR = 9;
-	AIVOICE_FAVICON = 10;
-	AISTUDIO = 11;
-	DEEPLINK = 12;
-	NOTIFICATION = 13;
-	PROFILE_MESSAGE_BUTTON = 14;
-	FORWARD = 15;
-	APP_SHORTCUT = 16;
-	FF_FAMILY = 17;
-	AI_TAB = 18;
-	AI_HOME = 19;
-	AI_DEEPLINK_IMMERSIVE = 20;
-	AI_DEEPLINK = 21;
-	META_AI_CHAT_SHORTCUT_AI_STUDIO = 22;
-	UGC_CHAT_SHORTCUT_AI_STUDIO = 23;
-	NEW_CHAT_AI_STUDIO = 24;
-	AIVOICE_FAVICON_CALL_HISTORY = 25;
-	ASK_META_AI_CONTEXT_MENU = 26;
-	ASK_META_AI_CONTEXT_MENU_1ON1 = 27;
-	ASK_META_AI_CONTEXT_MENU_GROUP = 28;
-	INVOKE_META_AI_1ON1 = 29;
-	INVOKE_META_AI_GROUP = 30;
-	META_AI_FORWARD = 31;
-	NEW_CHAT_AI_CONTACT = 32;
-	MESSAGE_QUICK_ACTION_1_ON_1_CHAT = 33;
-	MESSAGE_QUICK_ACTION_GROUP_CHAT = 34;
-	ATTACHMENT_TRAY_1_ON_1_CHAT = 35;
-	ATTACHMENT_TRAY_GROUP_CHAT = 36;
-	ASK_META_AI_MEDIA_VIEWER_1ON1 = 37;
-	ASK_META_AI_MEDIA_VIEWER_GROUP = 38;
+    UNDEFINED_ENTRY_POINT = 0;
+    FAVICON = 1;
+    CHATLIST = 2;
+    AISEARCH_NULL_STATE_PAPER_PLANE = 3;
+    AISEARCH_NULL_STATE_SUGGESTION = 4;
+    AISEARCH_TYPE_AHEAD_SUGGESTION = 5;
+    AISEARCH_TYPE_AHEAD_PAPER_PLANE = 6;
+    AISEARCH_TYPE_AHEAD_RESULT_CHATLIST = 7;
+    AISEARCH_TYPE_AHEAD_RESULT_MESSAGES = 8;
+    AIVOICE_SEARCH_BAR = 9;
+    AIVOICE_FAVICON = 10;
+    AISTUDIO = 11;
+    DEEPLINK = 12;
+    NOTIFICATION = 13;
+    PROFILE_MESSAGE_BUTTON = 14;
+    FORWARD = 15;
+    APP_SHORTCUT = 16;
+    FF_FAMILY = 17;
+    AI_TAB = 18;
+    AI_HOME = 19;
+    AI_DEEPLINK_IMMERSIVE = 20;
+    AI_DEEPLINK = 21;
+    META_AI_CHAT_SHORTCUT_AI_STUDIO = 22;
+    UGC_CHAT_SHORTCUT_AI_STUDIO = 23;
+    NEW_CHAT_AI_STUDIO = 24;
+    AIVOICE_FAVICON_CALL_HISTORY = 25;
+    ASK_META_AI_CONTEXT_MENU = 26;
+    ASK_META_AI_CONTEXT_MENU_1ON1 = 27;
+    ASK_META_AI_CONTEXT_MENU_GROUP = 28;
+    INVOKE_META_AI_1ON1 = 29;
+    INVOKE_META_AI_GROUP = 30;
+    META_AI_FORWARD = 31;
+    NEW_CHAT_AI_CONTACT = 32;
+    MESSAGE_QUICK_ACTION_1_ON_1_CHAT = 33;
+    MESSAGE_QUICK_ACTION_GROUP_CHAT = 34;
+    ATTACHMENT_TRAY_1_ON_1_CHAT = 35;
+    ATTACHMENT_TRAY_GROUP_CHAT = 36;
+    ASK_META_AI_MEDIA_VIEWER_1ON1 = 37;
+    ASK_META_AI_MEDIA_VIEWER_GROUP = 38;
+    MEDIA_PICKER_1_ON_1_CHAT = 39;
+    MEDIA_PICKER_GROUP_CHAT = 40;
+    ASK_META_AI_NO_SEARCH_RESULTS = 41;
+    META_AI_SETTINGS = 45;
 }
 
 enum BotMetricsThreadEntryPoint {
@@ -55,13 +60,14 @@ enum BotMetricsThreadEntryPoint {
 }
 
 enum BotSessionSource {
-	NONE = 0;
-	NULL_STATE = 1;
-	TYPEAHEAD = 2;
-	USER_INPUT = 3;
-	EMU_FLASH = 4;
-	EMU_FLASH_FOLLOWUP = 5;
-	VOICE = 6;
+    NONE = 0;
+    NULL_STATE = 1;
+    TYPEAHEAD = 2;
+    USER_INPUT = 3;
+    EMU_FLASH = 4;
+    EMU_FLASH_FOLLOWUP = 5;
+    VOICE = 6;
+    AI_HOME_SESSION = 7;
 }
 
 enum AIRichResponseMessageType {
@@ -88,31 +94,31 @@ enum SessionTransparencyType {
 }
 
 message BotPluginMetadata {
-	enum PluginType {
-		UNKNOWN_PLUGIN = 0;
-		REELS = 1;
-		SEARCH = 2;
-	}
+    enum PluginType {
+        UNKNOWN_PLUGIN = 0;
+        REELS = 1;
+        SEARCH = 2;
+    }
 
-	enum SearchProvider {
-		UNKNOWN = 0;
-		BING = 1;
-		GOOGLE = 2;
-		SUPPORT = 3;
-	}
+    enum SearchProvider {
+        UNKNOWN = 0;
+        BING = 1;
+        GOOGLE = 2;
+        SUPPORT = 3;
+    }
 
-	optional SearchProvider provider = 1;
-	optional PluginType pluginType = 2;
-	optional string thumbnailCDNURL = 3;
-	optional string profilePhotoCDNURL = 4;
-	optional string searchProviderURL = 5;
-	optional uint32 referenceIndex = 6;
-	optional uint32 expectedLinksCount = 7;
-	optional string searchQuery = 9;
-	optional WACommon.MessageKey parentPluginMessageKey = 10;
-	optional PluginType deprecatedField = 11;
-	optional PluginType parentPluginType = 12;
-	optional string faviconCDNURL = 13;
+    optional SearchProvider provider = 1;
+    optional PluginType pluginType = 2;
+    optional string thumbnailCdnUrl = 3;
+    optional string profilePhotoCdnUrl = 4;
+    optional string searchProviderUrl = 5;
+    optional uint32 referenceIndex = 6;
+    optional uint32 expectedLinksCount = 7;
+    optional string searchQuery = 9;
+    optional MessageKey parentPluginMessageKey = 10;
+    optional PluginType deprecatedField = 11;
+    optional PluginType parentPluginType = 12;
+    optional string faviconCdnUrl = 13;
 }
 
 message BotLinkedAccount {
@@ -256,6 +262,7 @@ message BotProgressIndicatorMetadata {
 
 	optional string progressDescription = 1;
 	repeated BotPlanningStepMetadata stepsMetadata = 2;
+    optional int64 estimatedCompletionTime = 3;
 }
 
 message BotCapabilityMetadata {
@@ -310,18 +317,27 @@ message BotCapabilityMetadata {
 		AI_RESPONSE_MODEL_BRANDING = 47;
 		SESSION_TRANSPARENCY_SYSTEM_MESSAGE = 48;
 		RICH_RESPONSE_UR_REASONING = 49;
+        RICH_RESPONSE_UR_ZEITGEIST_CITATIONS = 50;
+        RICH_RESPONSE_UR_ZEITGEIST_CAROUSEL = 51;
+        AI_IMAGINE_LOADING_INDICATOR = 52;
+        RICH_RESPONSE_UR_IMAGINE = 53;
+        AI_IMAGINE_UR_TO_NATIVE_LOADING_INDICATOR = 54;
+        RICH_RESPONSE_UR_BLOKS_ENABLED = 55;
+        RICH_RESPONSE_INLINE_LINKS_ENABLED = 56;
+        RICH_RESPONSE_UR_IMAGINE_VIDEO = 57;
 	}
 
 	repeated BotCapabilityType capabilities = 1;
 }
 
 message BotModeSelectionMetadata {
-	enum BotUserSelectionMode {
-		UNKNOWN_MODE = 0;
-		REASONING_MODE = 1;
-	}
+    enum BotUserSelectionMode {
+        DEFAULT_MODE = 0;
+        THINK_HARD_MODE = 1;
+    }
 
-	repeated BotUserSelectionMode mode = 1;
+    repeated BotUserSelectionMode mode = 1;
+    repeated uint32 overrideMode = 2;
 }
 
 message BotQuotaMetadata {
@@ -348,7 +364,8 @@ message BotImagineMetadata {
 		EDIT = 4;
 	}
 
-	optional ImagineType imagineType = 1;
+    optional ImagineType imagineType = 1;
+    optional string shortPrompt = 2;
 }
 
 message BotAgeCollectionMetadata {
@@ -595,6 +612,7 @@ message AIHomeState {
 			CREATE_IMAGE = 1;
 			ANIMATE_PHOTO = 2;
 			ANALYZE_FILE = 3;
+            COLLABORATE = 4;
 		}
 
 		optional AIHomeActionType type = 1;
@@ -604,6 +622,7 @@ message AIHomeState {
 		optional string imageWdsIdentifier = 5;
 		optional string imageTintColor = 6;
 		optional string imageBackgroundColor = 7;
+        optional string cardTypeId = 8;
 	}
 
 	optional int64 lastFetchTime = 1;
@@ -773,6 +792,10 @@ message BotMetadata {
 	optional AIRegenerateMetadata regenerateMetadata = 32;
 	optional SessionTransparencyMetadata sessionTransparencyMetadata = 33;
 	optional BotDocumentMessageMetadata botDocumentMessageMetadata = 34;
+    optional BotGroupMetadata botGroupMetadata = 35;
+    optional BotRenderingConfigMetadata botRenderingConfigMetadata = 36;
+    optional BotInfrastructureDiagnostics botInfrastructureDiagnostics = 37;
+    optional AIMediaCollectionMetadata aiMediaCollectionMetadata = 38;
 	optional bytes internalMetadata = 999;
 }
 
@@ -868,4 +891,31 @@ message SessionTransparencyMetadata {
 	optional string disclaimerText = 1;
 	optional string hcaID = 2;
 	optional SessionTransparencyType sessionTransparencyType = 3;
+}
+
+message BotInfrastructureDiagnostics {
+    optional BotBackend botBackend = 1;
+    repeated string toolsUsed = 2;
+    enum BotBackend {
+        AAPI = 0;
+        CLIPPY = 1;
+    }
+}
+message BotGroupParticipantMetadata {
+    optional string botFbid = 1;
+}
+message BotRenderingConfigMetadata {
+    optional string bloksVersioningId = 1;
+    optional double pixelDensity = 2;
+}
+message BotGroupMetadata {
+    repeated BotGroupParticipantMetadata participantsMetadata = 1;
+}
+message AIMediaCollectionMessage {
+    optional string collectionId = 1;
+    optional uint32 expectedMediaCount = 2;
+    optional bool hasGlobalCaption = 3;
+}
+message AIMediaCollectionMetadata {
+    optional string collectionId = 1;
 }
